@@ -1,0 +1,19 @@
+﻿Create table Comets(
+ID int identity(1,1) not null,
+Name nvarchar(max) not null,
+Nametype  nvarchar(max) not null,
+Recclass nvarchar(max) not null,
+Mass  float not null,
+Fall   nvarchar(max) not null,
+Year    date null,
+Reclat	 float not null,
+Reclong	 float not null,
+)
+
+select Fall
+from Comets
+group by Fall 
+
+
+delete
+from Comets
