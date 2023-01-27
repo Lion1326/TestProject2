@@ -20,6 +20,7 @@ public interface IWorkService
     Task SaveDataFromNasaAsync();
     Task<GetCometsByYearResponse> GetCometsByYearAsync(GetCometsByYearRequest request);
     Task<GetPropertiesPageResponse> GetPropertiesAsync();
+    void ClearDB();
 }
 public class WorkService : IWorkService
 {
@@ -61,11 +62,6 @@ public class WorkService : IWorkService
             _unitOfWork.SaveChangesWithIdentityInsert<Comet>();
             await _unitOfWork.CommitTransactionAsync();
         }
-        catch (HttpRequestException ex)
-        {
-            _unitOfWork.Dispose();
-            throw ex;
-        }
         catch
         {
             await _unitOfWork.RollbackTransactionAsync();
@@ -78,7 +74,7 @@ public class WorkService : IWorkService
     {
         GetCometsByYearResponse result = new GetCometsByYearResponse();
         result.List = await _unitOfWork.cometRepository.Find(x => x.Year.HasValue &&
-                                                x.RecclassID == request.RecclassID &&
+                                                (!request.RecclassID.HasValue || x.RecclassID == request.RecclassID)&&
                                                 x.Year.Value.Year >= request.YearFrom &&
                                                 x.Year.Value.Year <= request.YearTo &&
                                                 x.Name.IndexOf(request.Pattern) >= 0)
@@ -100,11 +96,18 @@ public class WorkService : IWorkService
             recclasses = await _unitOfWork.recclassRepository.GetList().ToListAsync();
             if (recclasses != null && recclasses.Any())
             {
-                _memoryCache.Set("PageProperties", result.Recclasses,
+                _memoryCache.Set("PageProperties", recclasses,
                 new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
             }
         }
         result.Recclasses = recclasses;
         return result;
+    }
+    public void ClearDB()
+    {
+        _unitOfWork.cometRepository.ClearTable();
+        _unitOfWork.recclassRepository.ClearTable();
+        _memoryCache.Remove("PageProperties");
+        _unitOfWork.Save();
     }
 }

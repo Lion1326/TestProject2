@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TestProject.API.Exceptions;
 using TestProject.Infrastructure;
 using TestProject.Services;
+using static System.Net.Mime.MediaTypeNames;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -23,13 +27,16 @@ builder.Services.AddInfrastructure(configuration);
 
 builder.Services.AddApp();
 
-
 builder.Services.AddControllers();
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<HttpResponseExceptionFilter>();
+});
 
 var app = builder.Build();
 
@@ -40,6 +47,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 

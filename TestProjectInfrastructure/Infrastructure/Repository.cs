@@ -16,6 +16,7 @@ public interface IRepository<TEntity> where TEntity : class
     void AddParts(IEnumerable<TEntity> model);
     void DeletePart(TEntity model);
     void DeleteParts(IEnumerable<TEntity> model);
+    void ClearTable();
 }
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
@@ -60,5 +61,15 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         {
             _context.Entry(model).State = EntityState.Deleted;
         }
+    }
+    public void ClearTable()
+    {
+        var entityType = _context.Model.FindEntityType(typeof(TEntity));
+        if (entityType == null)
+        {
+            throw new InvalidOperationException("Repository.ClearTable FindEntityType: can't fined FindEntityType");
+        }
+        _context.Database.ExecuteSqlRaw(
+            $"TRUNCATE TABLE  {entityType.GetSchema()}.{entityType.GetTableName()}");
     }
 }

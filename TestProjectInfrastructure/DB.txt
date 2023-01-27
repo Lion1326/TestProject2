@@ -17,3 +17,6 @@ group by Fall
 
 delete
 from Comets
+
+create NONCLUSTERED index Comets_RecclassID_Year_Name_Mass on Comets (RecclassID,Year) INCLUDE(name,mass) 
+drop index Comets_RecclassID_Year_Name on Comets

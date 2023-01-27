@@ -11,7 +11,7 @@ public class GetCometsByYearRequest : IValidatableObject
 {
     public int YearFrom { get; set; }
     public int YearTo { get; set; }
-    public int RecclassID { get; set; }
+    public int? RecclassID { get; set; }
     public string Pattern { get; set; } = string.Empty;
     public IEnumerable<ValidationResult> Validate(ValidationContext context)
     {
@@ -31,7 +31,7 @@ public class GetCometsByYearRequest : IValidatableObject
         {
             yield return new ValidationResult(
                 $"Year From must be less then Year To.",
-                new[] { nameof(YearFrom), nameof(YearTo) });
+                new[] { nameof(YearFrom) });
         }
     }
 }
