@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace TestProject.Infrastructure.Models;
+﻿namespace TestProject.Infrastructure.Models;
 
 public class Comet
 {

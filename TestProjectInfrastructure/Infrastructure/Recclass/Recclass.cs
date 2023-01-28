@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.Metrics;
-
-namespace TestProject.Infrastructure.Models;
+﻿namespace TestProject.Infrastructure.Models;
 
 public class Recclass
 {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using TestProject.Infrastructure.Models;
 
 namespace TestProject.Infrastructure;

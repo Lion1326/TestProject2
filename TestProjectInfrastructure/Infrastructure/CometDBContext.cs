@@ -1,12 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics.Metrics;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Reflection.Metadata;
 using TestProject.Infrastructure.Models;
 
 

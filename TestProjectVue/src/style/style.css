@@ -44,6 +44,10 @@
     font-weight: bold;
     background-color: #eee;
 }
+.footer td{
+    font-weight: bold;
+    background-color: rgb(243, 243, 243);
+}
 
 input[type="button"],.button {
     background-color: #00a1e1;
@@ -51,6 +55,7 @@ input[type="button"],.button {
     border: none;
     padding: 5px 20px;
     cursor: pointer;
+    margin: 5px;
 }
 
 input[type="button"]:hover,.button:hover {
@@ -63,7 +68,7 @@ input[type="button"]:hover,.button:hover {
 .field {
     border: none;
     box-shadow: 1px 1px 4px 1px gray;
-    padding: 6px;
+    padding: 4px;
     margin: 5px;
 }
 
@@ -78,3 +83,88 @@ input[type="button"]:hover,.button:hover {
     outline: none;
     box-shadow: 1px 1px 4px 1px #83dcff;
 }
+.field:invalid {
+    box-shadow: 1px 1px 4px 1px rgb(255, 131, 131);
+}
+
+.formLoader {
+    overflow: hidden;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    min-height: 150px;
+  }
+  
+  .formLoader ul {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 999999;
+    margin: 0;
+  }
+  
+  @keyframes preload {
+    0% {
+      background: #00a1e1;
+      opacity: 1
+    }
+    50% {
+      background: #00a1e1;
+      opacity: 0.5
+    }
+    100% {
+      background: #00a1e1;
+      opacity: 1
+    }
+  }
+  
+  .formLoader .formLoading {
+    display: block;
+    height: 14px;
+    margin: 0 auto;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    transform: translateX(-50%);
+    position: absolute;
+    width: 100%;
+    padding: 0;
+  }
+  
+  .formLoader .formLoading li {
+    background: #00a1e1;
+    opacity: 0.5;
+    display: block;
+    float: left;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    padding: 0;
+    position: relative;
+    margin: 0 0 0 4px;
+    animation: preload 1s infinite;
+    top: -50%;
+    border-radius: 50%;
+  }
+  
+  .formLoader .formLoading li:first-child {
+    margin-left: 0
+  }
+  
+  .formLoader .formLoading li:nth-child(2) {
+    animation-delay: .15s
+  }
+  
+  .formLoader .formLoading li:nth-child(3) {
+    animation-delay: .3s
+  }
+  
+  .formLoader.formLoader-complete {
+    opacity: 0;
+    visibility: hidden;
+    transition-duration: 1s
+  }
+
+  .error-table{
+    margin-left: 5px; 
+  }

@@ -1,6 +1,4 @@
-﻿
-
-namespace TestProject.Services.Models;
+﻿namespace TestProject.Services.Models;
 
 public class NasaComet
 {

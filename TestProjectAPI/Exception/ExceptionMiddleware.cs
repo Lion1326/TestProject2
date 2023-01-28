@@ -1,9 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-
-using System.Net;
 
 namespace TestProject.API.Exceptions;
 
@@ -38,6 +35,5 @@ public class HttpResponseExceptionFilter : IExceptionFilter
         {
             StatusCode = errorResult.StatusCode,
         };
-        //throw new NotImplementedException();
     }
 }

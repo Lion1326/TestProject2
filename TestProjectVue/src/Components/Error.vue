@@ -29,23 +29,12 @@ export default {
         let res = this.$store.state.error;
 
         let error = await res.json();
-        if (res.status == 400) {
-            let messages = [];
-            for (let i = 0; i < Object.keys(error.errors).length; i++) {
-                const element = Object.values(error.errors)[i];
-                messages.push(element[0]);
-            }
-            this.error = {
-                title: error.title,
-                messages: messages
-            };
-        }
-        else {
-            this.error = {
-                title: error.exception,
-                messages: error.messages,
-            }
-        }
+
+        this.error = {
+            title: error.exception,
+            messages: error.messages,
+        };
+
     }
 };
 </script>

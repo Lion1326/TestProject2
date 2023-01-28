@@ -1,11 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Net;
-
-namespace TestProject.API.Exceptions;
+﻿namespace TestProject.API.Exceptions;
 public class ErrorResult
 {
     public List<string> Messages { get; set; } = new();
-
     public string? Source { get; set; }
     public string? Exception { get; set; }
     public string? ErrorId { get; set; }

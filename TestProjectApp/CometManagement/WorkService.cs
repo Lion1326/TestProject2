@@ -1,13 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Transactions;
 using TestProject.Infrastructure;
 using TestProject.Infrastructure.Models;
 using TestProject.Services;
@@ -74,7 +66,7 @@ public class WorkService : IWorkService
     {
         GetCometsByYearResponse result = new GetCometsByYearResponse();
         result.List = await _unitOfWork.cometRepository.Find(x => x.Year.HasValue &&
-                                                (!request.RecclassID.HasValue || x.RecclassID == request.RecclassID)&&
+                                                (!request.RecclassID.HasValue || x.RecclassID == request.RecclassID) &&
                                                 x.Year.Value.Year >= request.YearFrom &&
                                                 x.Year.Value.Year <= request.YearTo &&
                                                 x.Name.IndexOf(request.Pattern) >= 0)
@@ -83,24 +75,28 @@ public class WorkService : IWorkService
                                    {
                                        Year = x.Key,
                                        Count = x.Count(),
-                                       TotalMass = x.Sum(x => x.Mass)
-                                   }).ToListAsync();
+                                       Mass = x.Sum(x => x.Mass)
+                                   })
+                                   .OrderBy(x => x.Year).ThenBy(x => x.Count).ThenBy(x => x.Mass)
+                                   .ToListAsync();
+        if (result.List.Any())
+        {
+            result.TotalMass = result.List.Sum(x => x.Mass);
+            result.TotalCount = result.List.Sum(x => x.Count);
+        }
         return result;
     }
     public async Task<GetPropertiesPageResponse> GetPropertiesAsync()
     {
-        var result = new GetPropertiesPageResponse();
-        List<Recclass> recclasses = new List<Recclass>();
-        if (!_memoryCache.TryGetValue("PageProperties", out recclasses))
+        GetPropertiesPageResponse result = null;
+        if (!_memoryCache.TryGetValue("PageProperties", out result))
         {
-            recclasses = await _unitOfWork.recclassRepository.GetList().ToListAsync();
-            if (recclasses != null && recclasses.Any())
-            {
-                _memoryCache.Set("PageProperties", recclasses,
-                new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-            }
+            result = new GetPropertiesPageResponse();
+            result.Recclasses = await _unitOfWork.recclassRepository.GetList().ToListAsync();
+            result.Years = _unitOfWork.cometRepository.GetYears();
+            _memoryCache.Set("PageProperties", result,
+            new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
         }
-        result.Recclasses = recclasses;
         return result;
     }
     public void ClearDB()

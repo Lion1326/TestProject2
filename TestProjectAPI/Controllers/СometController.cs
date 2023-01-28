@@ -1,12 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using TestProject.Infrastructure.Models;
-using TestProject.Infrastructure;
-using TestProject.Services;
-using TestProject.Services.Models;
 using TestProject.App.CometManagement;
 using TestProjectApp.CometManagement.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace TestProjectAPI.Controllers;
 
